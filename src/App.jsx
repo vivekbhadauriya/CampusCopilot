@@ -1,15 +1,16 @@
 // App.jsx
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Layout from './components/Layout/Layout';
 import ChatWindow from './components/Chat/ChatWindow';
-import ReminderView from './components/Reminders/ReminderView';
+import RemindersView from './components/Reminders/ReminderView';
+import FoodSearch from './components/FoodFinder/FoodSearch';
+import AboutView from './components/About/AboutView';
 // import ScheduleView from './components/Schedule/ScheduleView';
 // import AboutView from './components/About/AboutView';
 import HomePage from './HomePage';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('home');
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -21,37 +22,21 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'home':
-        return <HomePage setActiveTab={setActiveTab} />;
-      case 'chat':
-        return <ChatWindow key="chat" />;
-      case 'reminders':
-        return <ReminderView key="reminders" />;
-      case 'schedule':
-        return <ScheduleView key="schedule" />;
-      case 'about':
-        return <AboutView key="about" />;
-      default:
-        return <HomePage setActiveTab={setActiveTab} />;
-    }
-  };
+  if (!isLoaded) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900">
-      <AnimatePresence mode="wait">
-        {!isLoaded ? (
-          <LoadingScreen key="loading" />
-        ) : (
-          <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-            <AnimatePresence mode="wait">
-              {renderContent()}
-            </AnimatePresence>
-          </Layout>
-        )}
-      </AnimatePresence>
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/chat" element={<ChatWindow />} />
+          <Route path="/reminders" element={<RemindersView />} />
+          {/* Add more routes as needed */}
+          <Route path="/about" element={<AboutView />} />
+          <Route path="food" element={<FoodSearch />}/>
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 

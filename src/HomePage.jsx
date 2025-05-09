@@ -1,36 +1,39 @@
 // components/Home/HomePage.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
-const HomePage = ({ setActiveTab }) => {
+const HomePage = () => {
+  const navigate = useNavigate();
+
   const features = [
     {
       title: "Chat",
       description: "Get instant answers about campus life",
       icon: "💬",
       color: "bg-purple-600",
-      tab: "chat"
+      path: "/chat"
     },
     {
       title: "Reminders",
       description: "Never miss an assignment or deadline",
       icon: "⏰",
       color: "bg-green-600",
-      tab: "reminders"
+      path: "/reminders"
     },
     {
       title: "Schedule",
       description: "Plan your classes and activities",
       icon: "📅",
       color: "bg-pink-600",
-      tab: "schedule"
+      path: "/schedule"
     },
     {
       title: "Campus Map",
       description: "Find your way around campus facilities",
       icon: "🗺️",
       color: "bg-yellow-600",
-      tab: "chat"
+      path: "/chat"
     }
   ];
 
@@ -113,7 +116,7 @@ const HomePage = ({ setActiveTab }) => {
             backdrop-blur-sm cursor-pointer`}
             variants={cardVariants}
             whileHover="hover"
-            onClick={() => setActiveTab(feature.tab)}
+            onClick={() => navigate(feature.path)}
           >
             <div className="flex items-start space-x-4">
               <div className={`${feature.color} bg-opacity-30 p-3 rounded-lg text-2xl`}>
@@ -139,7 +142,7 @@ const HomePage = ({ setActiveTab }) => {
           transition-all transform hover:scale-105 shadow-lg hover:shadow-blue-500/50"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => setActiveTab('chat')}
+          onClick={() => navigate('/chat')}
         >
           Get Started with Chat
         </motion.button>
