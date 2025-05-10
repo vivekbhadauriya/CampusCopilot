@@ -1,12 +1,19 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { 
+  HiHome, 
+  HiChat, 
+  HiClock, 
+  HiShoppingCart, 
+  HiInformationCircle 
+} from "react-icons/hi";
 
 const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Chat", path: "/chat" },
-  { label: "Reminders", path: "/reminders" },
-  { label: "Food Finder", path: "/food" },
-  { label: "About", path: "/about" }
+  { label: "Home", path: "/", icon: HiHome },
+  { label: "Chat", path: "/chat", icon: HiChat },
+  { label: "Reminders", path: "/reminders", icon: HiClock },
+  { label: "Food Finder", path: "/food", icon: HiShoppingCart },
+  { label: "About", path: "/about", icon: HiInformationCircle }
 ];
 
 const Sidebar = () => {
@@ -23,13 +30,14 @@ const Sidebar = () => {
             <li key={item.path}>
               <Link
                 to={item.path}
-                className={`block px-4 py-2 rounded-lg transition ${
+                className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition ${
                   location.pathname === item.path
                     ? "bg-blue-600 text-white"
                     : "hover:bg-gray-800"
                 }`}
               >
-                {item.label}
+                <item.icon className="h-5 w-5 text-gray-400" />
+                <span>{item.label}</span>
               </Link>
             </li>
           ))}

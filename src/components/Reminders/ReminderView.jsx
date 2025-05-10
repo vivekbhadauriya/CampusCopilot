@@ -7,30 +7,55 @@ import { getReminders, addReminder, deleteReminder, toggleReminder } from '../..
 const RemindersView = () => {
   const [showForm, setShowForm] = useState(false);
   const [reminders, setReminders] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchReminders();
   }, []);
 
   const fetchReminders = async () => {
-    const data = await getReminders();
-    setReminders(data);
+    try {
+      setError(null);
+      const data = await getReminders();
+      setReminders(data);
+    } catch (err) {
+      setError('Failed to fetch reminders. Please check if the backend server is running.');
+      console.error('Error fetching reminders:', err);
+    }
   };
 
   const handleAddReminder = async (newReminder) => {
-    await addReminder(newReminder.text, newReminder.dueDate);
-    fetchReminders();
-    setShowForm(false);
+    try {
+      setError(null);
+      await addReminder(newReminder);
+      await fetchReminders();
+      setShowForm(false);
+    } catch (err) {
+      setError('Failed to create reminder. Please try again.');
+      console.error('Error creating reminder:', err);
+    }
   };
 
   const handleDeleteReminder = async (id) => {
-    await deleteReminder(id);
-    fetchReminders();
+    try {
+      setError(null);
+      await deleteReminder(id);
+      await fetchReminders();
+    } catch (err) {
+      setError('Failed to delete reminder. Please try again.');
+      console.error('Error deleting reminder:', err);
+    }
   };
 
   const handleToggleReminder = async (id) => {
-    await toggleReminder(id);
-    fetchReminders();
+    try {
+      setError(null);
+      await toggleReminder(id);
+      await fetchReminders();
+    } catch (err) {
+      setError('Failed to update reminder. Please try again.');
+      console.error('Error toggling reminder:', err);
+    }
   };
 
   const containerVariants = {
@@ -60,6 +85,13 @@ const RemindersView = () => {
           <span>New Reminder</span>
         </motion.button>
       </div>
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-500 bg-opacity-20 border border-red-500 rounded-lg text-red-200">
+          {error}
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row h-full">
         <motion.div className="flex-1 overflow-y-auto pr-4">
           <ReminderList 

@@ -33,7 +33,7 @@ const HomePage = () => {
       description: "Find your way around campus facilities",
       icon: "🗺️",
       color: "bg-yellow-600",
-      path: "/chat"
+      path: "https://www.google.com/maps"
     }
   ];
 
@@ -116,7 +116,13 @@ const HomePage = () => {
             backdrop-blur-sm cursor-pointer`}
             variants={cardVariants}
             whileHover="hover"
-            onClick={() => navigate(feature.path)}
+            onClick={() => {
+              if (feature.path.startsWith('http')) {
+                window.open(feature.path, '_blank');
+              } else {
+                navigate(feature.path);
+              }
+            }}
           >
             <div className="flex items-start space-x-4">
               <div className={`${feature.color} bg-opacity-30 p-3 rounded-lg text-2xl`}>
